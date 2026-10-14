@@ -24,7 +24,7 @@ Légende : ✅ fait · 🟡 partiel · ❌ à faire · ⛔ bloqué / abandonné 
 | Décision V2 | État | Constat dans le code |
 |---|---|---|
 | Lanceur multi-timeframes (M5, M15, M30, H1 en parallèle) | ✅ | Onglet Lancer. **Mais** H1 ne s'échauffe jamais sur 59 jours et M15/M30 très peu (voir plan, constat 6) |
-| Arène live « 7 modes » | 🟡 | **6 modes** codés : Battle Royale, Tournoi, 1V1, Équipe, Domination, Arena. Le libellé « 7 modes » est inexact |
+| Arène live « 7 modes » | ✅ | **6 modes** codés ; libellé corrigé en « 6 modes » le 14/10 |
 | Paramètres par tableau + retour à l'origine + export/import JSON | ✅ | Onglet Lancer, réglages du tableau |
 | Statut OANDA démo en lecture seule | ✅ | Prix et résumé de compte Practice, réservé au propriétaire |
 | Réglages avancés : stop suiveur, pause après une perte | ✅ | Désactivés par défaut, n'altèrent pas les résultats de référence |
@@ -152,26 +152,28 @@ Légende : ✅ fait · 🟡 partiel · ❌ à faire · ⛔ bloqué / abandonné 
 
 ---
 
-## 7. Décisions contradictoires à trancher
+## 7. Décisions arrêtées le 14/10/2026 (ex-conflits C1 à C6)
 
-| # | Sujet | Valeurs en conflit | Recommandation |
+| # | Sujet | Décision | Appliqué dans |
 |---|---|---|---|
-| **C1** | Risque par trade | 0,25 % (V10, règles du labo éducatif) · 0,5 % (agents V12) · 1 % (agents de la Battle du labo éducatif) · 0,05 % (profil 100 €) | Fixer une valeur unique dans un registre d'agents partagé |
-| **C2** | R:R de référence | 1,5 (robot MT5, agents V12, profil 100 €) · 2,0 (baseline V12, Battle du labo éducatif) | Trancher, puis l'écrire dans la Référence V12 |
-| **C3** | Crypto | Exclue (V12, MiCA bloqué) · présente (BTC visuels, Binance, vision globale V10) | Exclure partout tant que MiCA est bloqué |
-| **C4** | Broker démo / exécution | OANDA MT5 · Axi MT5 · IBKR (le Sentinel exige un « pont IBKR ») · Saxo (refusé) · cTrader | Choisir une seule cible démo pour la V3 |
-| **C5** | Fuseau des sessions | Paris · heure serveur MT5 | Paris (déjà utilisé par le moteur) sauf si le robot MT5 doit être reproduit à l'identique |
-| **C6** | Paramètres des agents | Deux registres différents (V12 vs labo éducatif) | Le registre V12 fait foi |
+| **C1** | Risque par trade | **Plafond absolu 0,5 % partout.** Recherche V12 à 0,5 % (valeur de la Référence, inchangée). Démo et réel (profil 100 €, futur pont MT5) à **0,25 %**, risque global 1 %, 3 positions maximum. | Labo V12 : saisie et serveur plafonnés à 0,5 %, profil Arena ramené de 1 % à 0,5 %. Labo éducatif : agents à 0,5 %, profil 100 € à 0,25 € (au lieu de 0,05 €), réglages plafonnés à 0,5 % |
+| **C2** | R:R de référence | **1,5** (robot MT5 et Référence V12). 2,0 reste une variante à tester. Chaque agent garde son propre R:R du registre V12. | Labo V12 (Cockpit). Labo éducatif : R:R des agents alignés (au lieu de 2 pour tous) |
+| **C3** | Crypto | **Exclue de tout l'écosystème** tant que MiCA est bloqué. | Labo éducatif : BTC/ETH retirés du terminal, du tableau Battle (onglet Crypto supprimé), des visuels, de la liste brokers ; MiCA passé en « bloqué » ; le serveur refuse l'analyse d'un symbole crypto. Bot : BTC/USD remplacé par GBP/JPY |
+| **C4** | Broker démo V3 | **OANDA MT5 (OANDA TMS) via le pont Python local**, démo d'abord. Plan B : IBKR Paper. cTrader : candidature possible. Saxo : accès refusé, abandonné. Axi non retenu. | Labo V12 (Cockpit, feuille de route V3). Labo éducatif : liste brokers réduite à 4 statuts factuels, Saxo marqué « accès refusé », Sentinel verrouillé sur « pont MT5 requis » |
+| **C5** | Fuseau des sessions | **Heure de Paris.** L'heure serveur MT5 est convertie à l'import CSV et par le futur pont. | Labo V12 (Cockpit). Labo éducatif : profil 100 € et protocole indiquent Europe/Paris |
+| **C6** | Registre des agents | **Le registre du Labo V12 fait foi.** | Labo éducatif : les 7 agents de la Battle reprennent noms et paramètres V12 (EMA, RSI, ATR, R:R, risque, limites, filtres, unité M5) ; les anciens réglages enregistrés dans le navigateur ne sont plus rechargés |
+
+Ce qui reste du ressort du porteur : confirmer par écrit auprès du support OANDA OTMS que l'usage d'un robot MT5 en démo est autorisé, fournir le robot .mq5 et les exports MT5, choisir PC ou VPS Windows.
 
 ---
 
 ## 8. Ce qu'il reste à lancer pour boucler la V2
 
 Dans l'ordre :
-1. **Trancher C1 à C6** (aucun développement nécessaire, seulement des choix).
+1. ~~Trancher C1 à C6~~ ✅ fait le 14/10/2026 (section 7).
 2. **Walk-forward dans le moteur V12** (dernier engagement V2 non tenu) — plan, Lot 2.4.
 3. **Vérité des données du labo éducatif** : force des 8 devises, Spider Intelligence Score et Battle calculés sur données réelles, ou marqués fictifs — plan, Lot 1.
 4. **Risk Engine global** (risque total 1 %, 3 positions max, DD jour 2 %, DD total 10 %, kill switch) — décision V10 + dossier S2.
-5. **Libellés exacts** : « 6 modes », statut des brokers (Saxo refusé), retrait du « LIVE-READY ».
+5. **Libellés exacts** : « 6 modes » ✅ et statut des brokers ✅ corrigés le 14/10 ; reste le retrait du « LIVE-READY ».
 6. **Dossier de présentation ACPR** (demandé le 18/09) puis démarche AMF.
 7. Fournir les éléments « En attente de ta part » (robot .mq5, exports MT5) pour préparer la V3.
