@@ -2,6 +2,8 @@
 
 _Préparé le 14/10/2026. Base de travail pour lancer les prochaines améliorations._
 
+Voir aussi : [`MISES_A_JOUR_DECIDEES_V2.md`](MISES_A_JOUR_DECIDEES_V2.md) — registre des mises à jour déjà décidées et leur état réel.
+
 > **Note de confidentialité** : ce dépôt GitHub est **public**. Ce document ne contient ni secret, ni adresse d'application, ni détail exploitable. Recommandation n°1 du Lot 0 : passer le dépôt en privé avant d'y versionner le code des applications (principe « Protection du projet » du dossier de travail V12).
 
 ---
