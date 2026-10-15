@@ -177,3 +177,36 @@ Dans l'ordre :
 5. **Libellés exacts** : « 6 modes » ✅ et statut des brokers ✅ corrigés le 14/10 ; reste le retrait du « LIVE-READY ».
 6. **Dossier de présentation ACPR** (demandé le 18/09) puis démarche AMF.
 7. Fournir les éléments « En attente de ta part » (robot .mq5, exports MT5) pour préparer la V3.
+
+---
+
+## 9. Jeux de réglages des agents (Labo V12, onglet Agents) — mis en ligne le 15/10/2026
+
+Demande : depuis l'onglet **Agents** (tableaux, graphiques et réglages des 8 agents), pouvoir **enregistrer les réglages des agents** puis les **tester dans les autres modes**, en particulier **Battle** et **Évaluation (Rapport A–F)**.
+
+| Élément | Ce qui a été fait |
+|---|---|
+| Enregistrer | Encadré « Jeux de réglages (les 8 agents) » : un nom, une note facultative, puis « Enregistrer les réglages des 8 agents ». Le jeu garde les paramètres des 8 agents tels qu'ils sont à l'écran, la liste des agents modifiés par rapport à l'origine et la période de données utilisée. Stockage sur le serveur, réservé au propriétaire, jamais supprimé. Le serveur revérifie chaque agent (mêmes limites que les versions, risque ≤ 0,5 % selon C1). |
+| Recharger | « Charger dans l'éditeur » remet les réglages d'un jeu dans l'onglet Agents. Le journal note quels agents ont été remplacés. |
+| Battle | Choix des paramètres testés : réglages actuels, profils d'origine ou un jeu enregistré, avec l'option « Comparer avec une 2e source ». Les deux sources courent côte à côte : jusqu'à 16 courbes, la seconde en pointillés. Raccourcis « Battle de ce jeu » et « Battle contre l'origine » depuis la liste des jeux. Les résultats de l'onglet Agents ne sont pas écrasés, et le Cockpit indique de quel jeu vient le meilleur agent. |
+| Évaluation | Onglet Rapport A–F : choix « Paramètres évalués ». Le rapport est recalculé sur le jeu choisi et affiche « Évalué avec : … ». L'évaluation est bloquée si les coûts sont invalides. Un résultat devenu périmé est signalé. |
+| Autres modes | Lancer / Arène : « Charger ce jeu dans le tableau ». Multi-marchés : choix de la source des paramètres. |
+| Brouillon | Les réglages en cours sont gardés sur l'appareil et retrouvés après un rechargement de la page, même si le journal est momentanément indisponible. Seuls les champs modifiés sont conservés : une mise à jour du registre V12 s'applique donc toujours aux autres champs. Un agent réglé explicitement sur l'appareil n'est jamais écrasé par le rechargement automatique des versions. Cela vaut pour une édition, un « Réinitialiser », une version restaurée ou un jeu chargé. Deux onglets ouverts n'effacent plus les réglages l'un de l'autre, et un message prévient quand un autre onglet les a changés. Une valeur hors limites est reprise telle quelle et signalée, jamais corrigée. |
+| Fiabilité | Un message « Chargement des jeux… » s'affiche pendant le chargement. Une panne est affichée avec un bouton « Réessayer », et les jeux se chargent même si le journal est indisponible. Jusqu'à 500 jeux sont listés. Un double appui n'enregistre qu'un seul jeu. Les jeux sont identifiés par leur nom et leur date partout (Battle, Rapport, Cockpit, Multi). Une note longue se déplie d'un toucher. Le journal a un type dédié « Jeu de réglages ». |
+
+Hors périmètre, inchangé : la Chasse et l'Auto-évolution partent toujours du registre V12 côté serveur (C6).
+
+Vérifications avant mise en ligne :
+- relecture adverse en trois passes, sans défaut bloquant :
+  - 1re passe : 20 défauts mineurs confirmés ;
+  - 2e passe : 9 autres, dont un important sur le brouillon ;
+  - 3e passe : 3 cas limites (passage de 100 versions, horloge décalée, deux onglets) ;
+  - tous corrigés puis revérifiés ;
+- typage strict sans erreur ;
+- dix scénarios simulés, couvrant :
+  - l'enregistrement d'un jeu ;
+  - la Battle à 1 ou 2 sources ;
+  - le Rapport A–F, Lancer et Multi-marchés ;
+  - le brouillon après rechargement (journal en panne, plus de 100 versions, deux onglets) ;
+  - la pagination, les pannes et le double appui ;
+- après mise en ligne : aucune erreur interface ni serveur, tâches planifiées (Chasse, Auto-évolution) toujours en succès, et code en ligne identique à la version testée (nombre de lignes de chacun des 13 fichiers modifiés).
