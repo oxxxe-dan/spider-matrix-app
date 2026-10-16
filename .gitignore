@@ -1,0 +1,22 @@
+# Dépôt PUBLIC : ne jamais versionner le robot MT5, ses réglages locaux ni ses secrets.
+spider_v12_mt5*.py
+*.mq5
+*.ex5
+.env
+.env.*
+*.ini
+secrets*
+*credentials*
+mt5_local*
+config_local*
+
+# Journaux et fichiers d'exécution du robot
+logs/
+*.log
+STOP*
+ordre_envoye.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
