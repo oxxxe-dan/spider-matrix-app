@@ -352,3 +352,25 @@ Ce qui ne change pas : avec les réglages par défaut (10 000 $, lot max 0,1, ri
 Vérifications : 9 tests dédiés (catégories ESMA, résultats inchangés par défaut, marge jamais supérieure aux fonds propres, réduction de lot et alertes à 1:1, écart d'ouverture avec protection du solde, clôture forcée au seuil exact, résumés), 13 tests du moteur et 13 tests de l'auto-évolution réussis, parcours de l'interface vérifié (profil ESMA → personnalisé 1:1 → désactivé), typage strict sans nouvelle erreur.
 
 Lots suivants du registre : R2 journal d'audit par analyse, R3 diagnostic des sources, R4 prix achat / vente OANDA réels, R5 caméra, R6 cellules de la matrice.
+
+---
+
+## 17. Lot R2 — journal d'audit par analyse dans le Labo V12 — mis en ligne le 16/10/2026
+
+Réponse à la rubrique 10 du registre d'évolution. Une « analyse importante » est un signal d'un agent dans l'onglet Live, ou un signal bloqué (limites de risque, spread, lot ou marge) : chacune produit une fiche, enregistrée une seule fois sur le compte, jamais modifiée ni supprimée.
+
+| Contenu de la fiche | Détail |
+|---|---|
+| Marché et heure | Instrument, bougie décisive (décision à sa clôture), heure d'enregistrement |
+| Données utilisées | Source, prix différés ou non, nombre de bougies, début des données, âge de la dernière bougie |
+| Paramètres | Réglages complets de l'agent et liste des réglages modifiés par rapport au profil d'origine |
+| Signal | Sens, étapes franchies (tendance, repli, croisement, horaire, volume, Hurst, VWAP, ADX) |
+| Confiance mesurée | Résultats passés de l'agent sur les données chargées : trades, réussite, espérance, facteur de profit, drawdown |
+| Risque et taille | Entrée, stop, objectif, lots, montant risqué, % de risque, R:R |
+| Coûts | Spread et glissement estimés |
+| Marge | Profil, levier maximal, marge requise et part des fonds propres (lot R1) |
+| Raisons, décision, anomalies | Raisons de l'agent ; décision « proposition simulée, aucun ordre envoyé » ou « refusé » avec la cause ; anomalies (données différées, flux figé, filtres ignorés, échantillon trop court) |
+
+Consultation dans l'onglet Journal (liste, détail, export JSON complet) ; le journal d'audit est aussi inclus dans la sauvegarde. Les fiches sont enregistrées tant que l'onglet Live est ouvert ; aucune tâche serveur n'est ajoutée (une écriture par signal, quelques-unes par jour).
+
+Vérifications : 23 tests dédiés (une fiche par signal ou blocage et aucune pour les autres états, plan identique à l'affichage, risque ≤ % autorisé, marge ≤ fonds propres, identifiant stable, anomalies, refus motivé, enregistrement sans doublon, refus des fiches invalides ou trop grosses, accès réservé au propriétaire, sauvegarde complète), parcours de l'interface (3 signaux enregistrés, aucun renvoi à la réouverture, liste, détail et export), tests du moteur, de la marge, de la sauvegarde et de l'auto-évolution réussis.
