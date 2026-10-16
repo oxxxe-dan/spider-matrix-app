@@ -571,3 +571,25 @@ Vérifications : 8 agents × or et EUR/USD, trades identiques à la version pré
 Mise à jour du point 12 du registre v13 : la limite « 125/125 » n'est plus d'actualité ; les déploiements passent. La limite connue de la plateforme AppDeploy est un plafond de crédits par jour (UTC).
 
 Prochaine étape décidée : « l'Œil », phase 1 (grilles Forex, Symboles, Or et métaux ; fort contre faible ; le contre ; plus hauts et plus bas).
+
+---
+
+## 27. Chantier 2, étape 1 — outils de contrôle du robot MT5 sans ordre — publiés le 16/10/2026
+
+Décision du porteur : vérifier le robot `spider_v12_mt5.py` avant tout ordre, même en démo ; aucune modification du robot ni aucun ordre sans accord explicite. Le robot reste sur le poste du porteur et n'entre jamais dans le dépôt public (`.gitignore` : robot, `.env`, journaux, fichiers d'arrêt, rapport de contrôle).
+
+Constat : le robot n'est pas accessible depuis la session de travail (conteneur distant, sans accès au PC). Des outils de contrôle ont donc été écrits pour être lancés sur le poste, dans [`outils/mt5`](../outils/mt5/LISEZMOI.md).
+
+| Outil | Rôle |
+|---|---|
+| `audit_statique.py` | Lit le robot sans l'exécuter. Dit si la commande `check` peut atteindre `order_send`, `Buy`, `Sell` ou `Close` (avec le chemin d'appel), et donne les indices sur : démo / réel, arrêt d'urgence par fichier (au démarrage, dans la boucle, action), les 11 limites de référence, les doublons d'ordre (magic, commentaire, lecture des positions avant envoi, envoi dans une boucle), les secrets (valeur jamais affichée) |
+| `check_sans_ordre.py` | Lance `check` avec `order_send`, `Buy`, `Sell` et `Close` neutralisés : chaque tentative est bloquée et comptée. Compte, serveur, titulaire et secrets lus dans l'environnement sont masqués dans la sortie |
+| `controle_complet.py` | Les deux à la suite. `check` n'est **pas lancé** si l'audit trouve un ordre atteignable depuis `check` ou ne trouve pas la commande `check`. Rapport dans `rapport_controle.txt`, prêt à coller |
+
+Limites de référence contrôlées : risque 0,50 % par trade, R:R 1,50, perte journalière max 1 %, 2 trades par jour, 3 pertes consécutives max, lot max 0,10, stop ATR × 1,30, break-even à 1 R + 2 points, spread max 20 points, déviation 10.
+
+Vérifications : 11 tests sous Linux avec un faux module MetaTrader5 et quatre robots fictifs (conforme, fautif, secret en clair, sans commande `check`) : chemins d'appel trouvés, secrets jamais affichés, toutes les tentatives d'ordre bloquées (un fichier témoin prouve qu'aucune n'a traversé), `check` non lancé quand l'audit l'interdit, compte et mot de passe masqués. **Pas encore testé** sur le vrai robot, ni sous Windows, ni avec Python 3.14, ni avec un terminal MT5.
+
+Point ouvert : le risque par trade demandé pour le robot (0,50 %) diffère de la décision C1 (0,25 % en démo et en réel, 0,50 % plafond absolu). À trancher par le porteur ; aucun paramètre n'est modifié en attendant.
+
+Prochaine étape : le porteur lance `controle_complet.py` sur son poste et transmet le rapport ; rapport A–F sur le vrai robot, puis propositions de modification soumises à accord.
