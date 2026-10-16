@@ -171,10 +171,10 @@ Ce qui reste du ressort du porteur : confirmer par écrit auprès du support OAN
 
 Dans l'ordre :
 1. ~~Trancher C1 à C6~~ ✅ fait le 14/10/2026 (section 7).
-2. **Walk-forward dans le moteur V12** (dernier engagement V2 non tenu) — plan, Lot 2.4.
-3. **Vérité des données du labo éducatif** : force des 8 devises, Spider Intelligence Score et Battle calculés sur données réelles, ou marqués fictifs — plan, Lot 1.
+2. ~~**Walk-forward dans le moteur V12**~~ ✅ mis en ligne le 16/10/2026 (section 10).
+3. **Vérité des données du labo éducatif** : force des 8 devises ✅ sur données réelles et Battle ✅ marquée « chiffres fictifs » le 16/10/2026 (section 11) ; reste le Spider Intelligence Score — plan, Lot 1.
 4. **Risk Engine global** (risque total 1 %, 3 positions max, DD jour 2 %, DD total 10 %, kill switch) — décision V10 + dossier S2.
-5. **Libellés exacts** : « 6 modes » ✅ et statut des brokers ✅ corrigés le 14/10 ; reste le retrait du « LIVE-READY ».
+5. **Libellés exacts** : « 6 modes » ✅ et statut des brokers ✅ corrigés le 14/10 ; « LIVE-READY » / « LIVE ENGINE » ✅ retirés le 16/10/2026 (section 11).
 6. **Dossier de présentation ACPR** (demandé le 18/09) puis démarche AMF.
 7. Fournir les éléments « En attente de ta part » (robot .mq5, exports MT5) pour préparer la V3.
 
@@ -210,3 +210,42 @@ Vérifications avant mise en ligne :
   - le brouillon après rechargement (journal en panne, plus de 100 versions, deux onglets) ;
   - la pagination, les pannes et le double appui ;
 - après mise en ligne : aucune erreur interface ni serveur, tâches planifiées (Chasse, Auto-évolution) toujours en succès, et code en ligne identique à la version testée (nombre de lignes de chacun des 13 fichiers modifiés).
+
+---
+
+## 10. Moteur et auto-évolution du Labo V12 — mis en ligne le 16/10/2026
+
+Plan d'améliorations, lots 1.6, 2.1 à 2.8 et 4.1 à 4.3. Rien n'envoie d'ordre : tout reste du calcul sur barres clôturées.
+
+| Lot | Ce qui a été fait |
+|---|---|
+| 2.1 Découpage après échauffement | Les 60/20/20 % (recherche, validation, test final) commencent à la première barre où les indicateurs de tous les agents du registre sont prêts ; aucun trade pendant l'échauffement. Si l'échauffement dépasse la moitié de l'historique (timeframes M15, M30, H1 sur 59 jours), l'ancien découpage est gardé et le rapport l'indique. |
+| 2.2 Taille de position | Le lot est calculé sur la perte réelle au stop, glissement compris : perte au stop ≤ risque affiché, hors écart d'ouverture. |
+| 2.3 Raccords de contrat GC=F | Les sauts d'échéance du contrat à terme sont détectés (saut positif de 0,25 à 1,5 %, en fin ou début de mois, qui tient au moins une heure, un au plus par 35 jours) et neutralisés par ajustement proportionnel des prix antérieurs. Le rapport (section A) affiche la date et la taille du saut, ou « aucun saut détecté ». Limite : validé sur sauts simulés, à confirmer sur les données réelles. |
+| 2.4 Walk-forward | StrategyTune → « Walk-forward (4 fenêtres) » : la variante choisie sur le passé est mesurée sur la tranche suivante, quatre fois. Verdict stable / mitigé / instable / échantillon insuffisant ; section G du rapport. Le test final masqué n'est jamais utilisé. |
+| 2.5 Bootstrap par journées | Les trades d'une même journée sont tirés ensemble ; p-value « par journées » affichée à côté de la p-value trade par trade, la plus prudente fait foi. |
+| 2.6 Jarvis Alpha, 9e agent | La règle de fusion (au moins 2 agents entrés au même moment dans le même sens, aucun désaccord, tendance H1 commune ≥ 60 %) est rejouée par le même moteur, avec les mêmes coûts. Jarvis apparaît dans Battle, Rapport et Chasse. |
+| 2.7 Indicateurs | Sharpe et Sortino journaliers, exposition, durée moyenne d'un trade, coût moyen en R (section C du rapport). |
+| 2.8 Tests du moteur | Suite de 13 tests exécutée avant chaque déploiement : déterminisme, absence d'anticipation (y compris trade par trade), découpage, comptabilité, taille de position, limites de risque, walk-forward, bootstrap, Jarvis, raccords GC=F. Trois défauts volontairement introduits ont tous été détectés. |
+| 1.6 Libellé de l'or | « Or — contrat à terme COMEX (GC=F) » avec Yahoo, « Or spot XAU/USD » avec OANDA Practice ou un export MT5. |
+| 4.1 Espérance ancrée | Une nouvelle version d'un agent ne peut plus être adoptée avec une espérance inférieure à celle de l'agent d'origine (avant : jusqu'à 10 % sous le champion du moment, ce qui permettait une dérive de génération en génération). |
+| 4.2 Choix prudent | Le taux de réussite reste la condition d'adoption ; entre plusieurs candidats acceptés, la borne basse de l'espérance (95 %) décide. |
+| 4.3 Période d'essai | Une version adoptée reste « à l'essai » jusqu'à 20 trades arrivés après son adoption : confirmée si leur espérance est positive et au moins égale à celle de la base, sinon retour arrière automatique. Les versions déjà en place passent aussi par cet essai. |
+
+Vérifications : 13 tests du moteur et 13 tests de l'auto-évolution réussis, typage strict sans nouvelle erreur, 9 scénarios d'interface simulés (Battle à 9 participants, Rapport, walk-forward, jeux de réglages). Après mise en ligne : aucune erreur interface ni serveur, tâches planifiées (Chasse, Auto-évolution) en succès.
+
+---
+
+## 11. Labo éducatif : vérité des données et protection — mis en ligne le 16/10/2026
+
+| Lot | Ce qui a été fait |
+|---|---|
+| 1.1 Force des 8 devises | La matrice n'utilise plus de valeurs simulées : la force de chaque devise est la variation moyenne sur 24 h de 15 paires réelles (bougies 1 h différées). Une paire indisponible est signalée, une devise sans donnée affiche « n.d. ». Le graphique d'une paire montre ses 12 dernières heures réelles (directe, inversée ou croisée via USD), sinon « évolution indisponible ». Badge « FORCE RÉELLE · 24 h · date » ou « DONNÉES INDISPONIBLES ». |
+| 1.2 Battle | Bandeau permanent « DÉMO VISUELLE — chiffres fictifs » : les courbes et classements de l'arène ne viennent ni de cotations ni du moteur V12. Bouton « ACTUALISER » des résultats des agents corrigé (il ne déclenchait rien). |
+| 1.3 Libellés | « LIVE-READY » et « LIVE ENGINE » remplacés par « RECHERCHE · DÉMO · AUCUN ORDRE ». |
+| 0.2 Protection | Les routes de calcul qui téléchargent des données de marché (analyse de marché, corrélations, flux des agents de la Battle) sont réservées au propriétaire, comme les routes d'IA. Le test éducatif d'un agent reste ouvert aux comptes connectés avec un quota de 30 tests par heure et par compte. |
+
+Vérifications : calcul de force contrôlé à la main sur un jeu de paires (classement attendu retrouvé), séries de paires et quota testés, typage strict sans erreur. Après mise en ligne : aucune erreur interface ni serveur.
+
+Point ouvert : l'application « Bot » n'apparaît plus dans le compte d'hébergement ; le lot 1.5 (retrait du DCA, source des prix) attend une décision.
+
