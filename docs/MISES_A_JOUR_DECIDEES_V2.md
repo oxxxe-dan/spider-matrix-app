@@ -330,3 +330,25 @@ Lots proposés pour la prochaine mise à jour, par ordre de valeur pour le coût
 | R6 | Cellules de la matrice : position de la valeur par rapport au zéro central | Labo éducatif |
 
 Règle conservée : une fonction n'est notée « en ligne » qu'après tests et publication effective.
+
+---
+
+## 16. Lot R1 — marge et levier simulés dans le Labo V12 — mis en ligne le 16/10/2026
+
+Réponse à la rubrique 8 du registre d'évolution (moteur de conformité et de risque) : chaque backtest du Labo V12 simule désormais la marge et le levier.
+
+| Élément | Comportement |
+|---|---|
+| Profil par défaut | « Particulier UE (limites ESMA) », vérifié le 16/10/2026 : levier maximal 30:1 sur les paires formées de USD, EUR, JPY, GBP, CAD et CHF ; 20:1 sur les autres paires et l'or ; 10:1 sur les autres matières premières et l'indice dollar (classement prudent) ; clôture forcée à 50 % de la marge initiale ; protection contre le solde négatif. Base : mesures d'intervention de l'ESMA sur les CFD pour particuliers, reprises par les autorités nationales. |
+| Autres profils | « Personnalisé » (levier 1:1 à 500:1, clôture forcée de 20 à 90 %) et « Désactivé ». Choix dans Coûts & contrat. Les règles réelles dépendent du courtier, de l'entité et de la juridiction : le labo le rappelle et ne présente aucun profil comme les règles d'un courtier précis. |
+| Contrôle avant l'ordre | Marge initiale = valeur de la position ÷ levier, jamais plus que les fonds propres : le lot est réduit, ou le signal est refusé si même le lot minimum ne tient pas. L'onglet Live affiche alors « Marge insuffisante ». |
+| Pendant la position | Alerte de marge comptée quand, au pire prix de la bougie, les fonds propres passent sous la marge initiale. Clôture forcée simulée si le seuil est atteint avant le stop (sortie « clôture forcée »). |
+| Gaps | Sortie de perte exécutée au prix d'ouverture quand le marché saute le stop ; nombre de cas et pire dépassement en R affichés. |
+| Solde négatif | Perte plafonnée au solde du compte ; montant non débité affiché. |
+| Affichage | Résumé « Marge » dans l'onglet Agents, le détail Multi-marchés et le rapport A–F, avec avertissement si une clôture forcée ou un plafonnement au solde survient. Capitaux de 100, 250 et 500 $ ajoutés pour tester les petits comptes. |
+
+Ce qui ne change pas : avec les réglages par défaut (10 000 $, lot max 0,1, risque ≤ 0,5 % par trade), aucune contrainte de marge n'est atteinte et les résultats sont identiques à ceux d'avant (vérifié sur les 8 agents, or et EUR/USD). Avec un risque plafonné à 0,5 % (décision C1), le stop passe toujours avant la clôture forcée ; celle-ci reste un filet de sécurité pour les écarts d'ouverture et les profils personnalisés.
+
+Vérifications : 9 tests dédiés (catégories ESMA, résultats inchangés par défaut, marge jamais supérieure aux fonds propres, réduction de lot et alertes à 1:1, écart d'ouverture avec protection du solde, clôture forcée au seuil exact, résumés), 13 tests du moteur et 13 tests de l'auto-évolution réussis, parcours de l'interface vérifié (profil ESMA → personnalisé 1:1 → désactivé), typage strict sans nouvelle erreur.
+
+Lots suivants du registre : R2 journal d'audit par analyse, R3 diagnostic des sources, R4 prix achat / vente OANDA réels, R5 caméra, R6 cellules de la matrice.
