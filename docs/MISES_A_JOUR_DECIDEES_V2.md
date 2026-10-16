@@ -392,3 +392,23 @@ Réponse à la rubrique 6 du registre d'évolution (tableau de diagnostic : conn
 Règles : le week-end et la pause quotidienne ne comptent pas comme des trous. Un flux ancien est normal le week-end et signalé en semaine (retard, panne ou jour férié). Verdict par source : Bon, À surveiller (trous > 0,5 %, flux en retard, bougies figées), Inutilisable (aucune bougie, bougies incohérentes, doublons, série non triée, échec de connexion). Les 20 derniers diagnostics restent visibles sur l'appareil.
 
 Vérifications : 19 tests dédiés (série propre, 25 fermetures normales reconnues, trous de 30 min et de 5 h, doublon, bougie incohérente, série non triée, calendrier du week-end, flux en retard en semaine et normal le samedi, pause quotidienne, bougies figées, série vide, base contrat à terme / spot, écart systématique, bougies présentes dans une seule source, horaires décalés), parcours de l'interface (aucun appel sans clic, 4 lignes, concordance, panne OANDA signalée, historique), parcours des lots R1 et R2 et anciens parcours réussis, typage strict sans erreur.
+
+---
+
+## 19. Lot R4 — prix d'achat et de vente OANDA réels dans les simulations du Labo V12 — mis en ligne le 16/10/2026
+
+Réponse à la rubrique 6 du registre d'évolution (intégrer bid / ask et spread dans les simulations).
+
+| Élément | Avant | Après |
+|---|---|---|
+| Prix OANDA récupérés | Prix milieu seulement | Prix d'achat et de vente de chaque bougie M5 ; le labo en tire le prix milieu exact et le spread réel à l'ouverture, au plus haut, au plus bas et à la clôture |
+| Spread dans le backtest | Constant, estimé dans Coûts & contrat | Avec des données OANDA : spread réel bougie par bougie. Entrée à l'ask (achat) ou au bid (vente) de l'ouverture ; stops, objectifs, point mort et stop suiveur contrôlés sur le bid (achat) ou l'ask (vente) ; sortie au temps sur le bid ou l'ask de clôture |
+| Filtre « spread max » | Comparé au spread constant | Comparé au spread réel de chaque entrée : une entrée pendant un spread trop large est refusée |
+| Source OANDA dans le labo principal | Absente (seulement Arène, Live, auto-évolution) | Bouton « OANDA (spot, achat / vente) » à côté de Yahoo, CSV et synthétique |
+| Choix | — | « Spread appliqué » dans Coûts & contrat : réel des données (par défaut quand il existe) ou modélisé constant |
+| Affichage | — | Spread moyen, à 95 %, maximum, et spread payé en moyenne à l'entrée : dans Coûts & contrat, l'onglet Agents, le rapport A–F et l'onglet Diagnostic |
+| Onglet Live et auto-évolution | Prix milieu OANDA, spread constant | Spread réel OANDA appliqué au signal et aux cycles d'auto-évolution sur la source OANDA |
+
+Ce qui ne change pas : avec Yahoo, un import CSV ou les données synthétiques (pas de prix d'achat et de vente séparés), le spread modélisé s'applique comme avant et les résultats sont identiques (vérifié sur les 8 agents, or et EUR/USD).
+
+Vérifications : 22 tests dédiés (résultats inchangés sans spread réel ; spread réel constant égal au modélisé = mêmes trades et mêmes coûts ; entrée = milieu ± demi-spread ± glissement ; mode modélisé ; refus des entrées quand le spread réel dépasse le maximum ; alignement des spreads après tri ; agrégation H1 ; séries incomplètes écartées ; onglet Live ; route OANDA en prix d'achat et de vente avec bid et ask reconstitués exactement), parcours de l'interface (chargement OANDA, spread réel affiché puis mode modélisé), tous les tests et parcours précédents réussis. Coût de calcul : environ +10 % en spread modélisé et +29 % en spread réel par backtest, sur des durées de quelques millisecondes.
