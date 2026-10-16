@@ -439,3 +439,19 @@ Coût : aucun appel serveur supplémentaire ; la jauge réutilise la force des d
 Vérifications : 6 tests de rendu (zéro au centre et bornes, valeur positive et négative, trace de la position précédente, mouvement négligeable ignoré, donnée indisponible, sens de la flèche), typage strict sans erreur, points d'ancrage vérifiés uniques dans le code en ligne.
 
 État du registre d'évolution : R1, R2, R3, R4 et R6 en ligne ; R5 (caméra) mis de côté.
+
+---
+
+## 22. Onglet Agents réorganisé (dispositions B et C) — mis en ligne le 16/10/2026
+
+Demande : graphiques moins hauts mais pleine largeur, drawdown réduit, et tous les réglages serrés dans un petit tableau quadrillé juste sous les graphiques. Trois maquettes ont été comparées (grille complète type MetaTrader 5, onglets + grille, tiroir de réglage type cTrader) ; le porteur a retenu B et C.
+
+| Élément | Avant | Après |
+|---|---|---|
+| Graphiques | Équité 220 px, titre « Drawdown » puis drawdown 110 px | Équité 150 px et drawdown 64 px collés dans un même cadre, même échelle de dates |
+| Effet d'un changement | — | Courbe du test précédent en pointillé gris quand les réglages viennent de changer |
+| Libellés des périodes | « Validation » et « Test final » se chevauchaient sur téléphone | Libellé complet s'il tient, sinon court (« Valid. », « Test », « Échauf. »), sinon aucun |
+| Réglages (B) | En bas de la page, 6 grands blocs d'une colonne | Juste sous les graphiques : 6 onglets (Tendance 6, Pullback 3, Déclencheur 5, Filtres 15, Sorties 9, Risque 7) et un quadrillage serré (3 colonnes sur téléphone, plus sur ordinateur) ; point bleu sur l'onglet et la case modifiés ; onglet retenu sur l'appareil |
+| Mode réglage (C) | — | Bouton « Mode réglage » : écran plein avec indicateurs (net, drawdown, trades, espérance et leur écart), graphiques compacts et courbe « avant le réglage » en pointillé en haut ; réglages pas à pas (− / +) dans un tiroir en bas ; test automatique ; « Garder ce réglage » ou « Annuler les changements » (retour aux réglages d'ouverture) |
+
+Vérifications : 6 tests (libellés sans chevauchement sur la configuration de la capture, bandes larges, bande trop étroite, pas à pas : voisin, bornes, valeur hors liste) ; parcours de l'interface (ordre graphiques puis réglages, hauteurs 150 / 64 px, 6 onglets, point bleu, mode réglage : + sur le stop ATR 1,3 → 1,5, test automatique, écarts affichés, annulation qui remet 1,3, conservation qui garde 1,5) ; tous les parcours précédents réussis, typage strict sans erreur.
