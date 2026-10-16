@@ -275,6 +275,8 @@ Constat : le plafond de 1 000 crédits par jour du forfait d'hébergement avait 
 | Labo éducatif : cycle Sentinel | Toutes les 15 min (13 marchés analysés) | Toutes les heures |
 | Labo éducatif : optimisation Jarvis native | Toutes les 30 min | Toutes les 6 h |
 | Labo éducatif : archive du calendrier | Toutes les heures | Toutes les 6 h |
+| Labo éducatif : revue Sentinel par IA | Désactivée mais réveillée toutes les heures pour ne rien faire | Retirée de la planification |
+| Labo éducatif : analyses de marché à l'ouverture | Terminal, labo d'indicateurs et labo risque téléchargeaient et recalculaient le marché dès l'ouverture de l'app, et de nouveau à chaque clic sur une paire de la matrice, même pages cachées | Chargement seulement quand la page concernée est affichée (module commun « pageGate », 8 tests) |
 
-Effet attendu : les exécutions automatiques passent d'environ 744 à environ 224 par jour (−70 %), et le calcul de l'auto-évolution est divisé par environ 5. Les fonctions restent les mêmes : seuls les rythmes changent. Après mise en ligne : aucune erreur interface ni serveur, nouvelles planifications actives.
+Effet attendu : les exécutions automatiques passent d'environ 744 à environ 200 par jour (−73 %), et le calcul de l'auto-évolution est divisé par environ 5. Les fonctions restent les mêmes : seuls les rythmes changent. Après mise en ligne : aucune erreur interface ni serveur, nouvelles planifications actives.
 
