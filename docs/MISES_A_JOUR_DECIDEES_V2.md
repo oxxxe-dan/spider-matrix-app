@@ -298,3 +298,35 @@ Règles : aucune anticipation (à chaque bougie, l'agent ne voit que les bougies
 Coût : aucun appel serveur supplémentaire. Dans le Labo V12, les graphiques réutilisent les calculs déjà faits par l'onglet Live dans le navigateur. Dans le labo éducatif, le rejeu est calculé dans la même requête que la Battle, qui reste limitée à une fois par minute, page affichée seulement.
 
 Vérifications : score du rejeu identique au calcul live sur 78 points sur 78, absence d'anticipation, au plus une position ouverte, agent neutre sans trade (8 tests) ; marqueurs et lignes vérifiés dans l'interface simulée ; 13 tests du moteur réussis ; typage strict sans nouvelle erreur.
+
+---
+
+## 15. Registre d'évolution du 12/09/2026 : état au 16/10/2026
+
+Le registre d'évolution du 12/09 (cahier de préparation de la prochaine mise à jour) a été comparé au code réellement en ligne dans le Labo V12 et le labo éducatif. Légende : ✅ en ligne et testé · 🟡 partiel · ❌ absent.
+
+| Rubrique du registre | État | Ce qui existe / ce qui manque |
+|---|---|---|
+| 2. Cœur Spider Matrix (toile, œil, zéro, relations) | 🟡 | Labo éducatif : toile animée avec œil et zéro central, matrice croisée des paires, force des devises calculée sur données réelles. Manque : dans chaque cellule, la position de la valeur par rapport au zéro central (écart relatif visible en mouvement). |
+| 3. Agent IA de marché | ✅ | Analyses structurées (régime, thèse, risques, points à surveiller, confiance) sur les seules données fournies, consensus multi-agents, plans entrée / stop / objectif dans l'onglet Live du V12, rejeu « comment il joue » de chaque agent (section 14). |
+| 4. Marchés | 🟡 | V12 : 46 marchés (devises, or, pétrole, indices, actions). Cryptoactifs exclus du V12 par décision ; labo éducatif : sélection plus courte. |
+| 5. Caméra / analyse visuelle | ❌ | Aucune lecture de capture d'écran ni extraction de valeurs. À construire : image réduite et compressée dans le navigateur avant envoi, extraction en petit tableau corrigeable à la main, analyse lancée seulement sur les valeurs confirmées. |
+| 6. OANDA v20 / Practice | 🟡 | V12 : lecture seule Practice (or, EUR/USD), historique M5 multi-pages pour le backtest et l'auto-évolution, statut avec latence. Manque : prix achat / vente (bid / ask) réels et spread historique dans les simulations (le spread est aujourd'hui modélisé), tableau de diagnostic complet (connexion, fraîcheur des données, erreurs, latence). Point ouvert : confirmation écrite d'OANDA sur l'usage du jeton Practice (section 3). Spider Matrix n'est présenté nulle part comme un produit OANDA. |
+| 7. Backtest et validation | ✅ | Moteur M5 avec frais, spread et glissement, découpage 60/20/20 après échauffement, walk-forward, comparaison multi-périodes et multi-marchés, rapport A–F, correction des tests multiples (Chasse, auto-évolution). |
+| 8. Conformité et risque | 🟡 | Règles fixes appliquées (risque max par trade, stop obligatoire, limite de perte journalière, validation humaine, aucune exécution), pages conformité France / UE, frais et pénalités. Manque : simulation du levier, de la marge, des appels de marge et des clôtures forcées ; profils réglementaires actualisables par entité et juridiction ; gestion explicite des gaps et des périodes de faible liquidité. |
+| 9. Chaîne de sécurité des ordres | ✅ | Aucune fonction n'envoie d'ordre réel : toute recommandation reste une proposition. Le Bot est abandonné (section 13). |
+| 10. Journal d'audit | 🟡 | V12 : journal des expériences (paramètres, résultats, versions, sauvegarde JSON). Manque : une fiche par analyse importante avec instrument, heure, données utilisées, signal, confiance, risque, taille, spread / glissement estimés, raisons, décision finale et anomalies. |
+| 12. État de déploiement | — | Le blocage « 125/125 déploiements » ne s'applique plus : les deux apps ont été mises à jour le 16/10. La contrainte actuelle est le plafond quotidien de crédits d'hébergement (section 13). |
+
+Lots proposés pour la prochaine mise à jour, par ordre de valeur pour le coût :
+
+| Lot | Contenu | Où |
+|---|---|---|
+| R1 | Marge et levier dans le backtest : profil réglementaire choisi (par défaut : limites de levier pour clients particuliers en UE), marge immobilisée par position, niveau de marge, appel de marge, clôture forcée simulée, protection contre le solde négatif ; profils datés et modifiables, jamais présentés comme les règles d'une entité OANDA précise | Labo V12 |
+| R2 | Journal d'audit par analyse (fiche complète, lecture seule, export JSON) | Labo V12 puis labo éducatif |
+| R3 | Diagnostic des sources (connexion, fraîcheur, barres manquantes, erreurs, latence) | Labo V12 |
+| R4 | Bid / ask OANDA réels dans les simulations quand la source OANDA est choisie | Labo V12 |
+| R5 | Caméra : lecture de capture, tableau corrigeable, analyse sur valeurs confirmées | Labo éducatif |
+| R6 | Cellules de la matrice : position de la valeur par rapport au zéro central | Labo éducatif |
+
+Règle conservée : une fonction n'est notée « en ligne » qu'après tests et publication effective.
