@@ -593,3 +593,27 @@ Vérifications : 11 tests sous Linux avec un faux module MetaTrader5 et quatre r
 Décision du porteur (16/10/2026) : le robot MT5 applique **0,25 % de risque par trade**, en démo comme en réel, conformément à C1 (0,50 % reste le plafond absolu et la valeur de la recherche V12). L'audit compare désormais le robot à 0,25 %. Le robot lui-même n'est pas modifié : si sa valeur diffère, la correction sera proposée et soumise à accord.
 
 Prochaine étape : le porteur lance `controle_complet.py` sur son poste et transmet le rapport ; rapport A–F sur le vrai robot, puis propositions de modification soumises à accord.
+
+---
+
+## 28. Conformité — tableau du Hub confronté au code du Labo V12 (lecture seule) — 16/10/2026
+
+Vérification faite en lisant le code source déployé du Labo V12 (version du 16/10/2026), sans rien modifier ni redéployer. Elle porte sur les trois lignes affichées « ACTIF ». Ce constat technique n'est pas un avis juridique.
+
+| Ligne du Hub | Affiché | Constat dans le code | Verdict |
+|---|---|---|---|
+| Sécurité opérationnelle | ACTIF | Aucun secret côté navigateur ; jeton OANDA lu dans les secrets du serveur et jamais renvoyé dans les messages d'erreur ; seul l'hôte OANDA **Practice** est appelé, aucune route d'ordre, de trade ou de position vers le courtier ; routes sensibles réservées au propriétaire (connexion + liste blanche) | **Confirmé** |
+| MAR — abus de marché | ACTIF | Journal d'audit : une fiche par signal ou signal bloqué, identifiant unique (marché, source, agent, bougie, état), doublons refusés par le serveur, jamais modifiée ni supprimée ; chaque fiche dit « aucun ordre envoyé ; validation humaine requise » | **Confirmé** |
+| RGPD / CNIL | ACTIF | Journal des essais et d'audit sans pièce d'identité, clé ni secret : confirmé. Mais : (1) la liste d'attente garde l'e-mail, l'identifiant et une note libre (300 caractères) **sans durée de conservation** ; (2) **aucune route** pour qu'un utilisateur consulte, exporte ou efface ses données ; (3) **aucune notice de confidentialité** dans l'application ; (4) l'e-mail est transmis à Stripe au paiement (sous-traitant à déclarer) | **Partiel** : minimisation et sécurité oui ; transparence, droits et conservation limitée non implémentés |
+
+Précision sur MiFID II (à faire confirmer par un juriste) : le verrou vise les services rendus à des tiers (conseil, gestion, transmission d'ordres, signaux). Un robot qui passe des ordres sur le compte du porteur, chez un courtier agréé, ne relève pas de ce verrou ; c'est la règle interne « démo d'abord, réel sur accord explicite » qui s'applique (chantier 2).
+
+Propositions soumises au porteur (rien n'est codé ni déployé sans accord) :
+
+| # | Proposition | Bénéfice | Risque |
+|---|---|---|---|
+| P1 | Afficher « RGPD : PARTIEL » dans le Hub tant que P2 à P4 ne sont pas faits | Tableau fidèle au code | Aucun |
+| P2 | Notice de confidentialité : responsable, finalités, données (e-mail, identifiant, note, journaux), durées, sous-traitants (hébergeur, Stripe), droits, contact, réclamation CNIL | Transparence (articles 12 à 14) | Texte à faire relire |
+| P3 | « Mes données » : consulter, exporter (JSON) et effacer ses données (liste d'attente, essais, jeux de réglages) | Droits d'accès, de portabilité et d'effacement | Effacement irréversible : confirmation demandée |
+| P4 | Durées de conservation : liste d'attente purgée 12 mois après l'inscription par la tâche planifiée ; journal d'audit conservé 5 ans puis purgé (durée à choisir par le porteur) | Conservation limitée | Une purge mal réglée efface trop : tests sur données fictives |
+| P5 | Ajouter au Hub une ligne « Robot MT5 (poste du porteur) : CONDITIONNEL — démo uniquement, contrôles du chantier 2 » | Le robot, hors labo, apparaît dans la conformité | Aucun |

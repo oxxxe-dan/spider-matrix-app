@@ -4,6 +4,10 @@ Versions réellement publiées et testées (MAJEUR.MINEUR.CORRECTIF). Les décis
 [`MISES_A_JOUR_DECIDEES_V2.md`](MISES_A_JOUR_DECIDEES_V2.md) ; ce journal ne trace que ce qui est sorti.
 La numérotation démarre le 16/10/2026 ; les versions antérieures sont décrites dans le registre (sections 1 à 15).
 
+## Registre — 16/10/2026
+- Conformité : tableau du Hub confronté au code du Labo V12 (registre, section 28). Sécurité opérationnelle et MAR
+  confirmées ; RGPD partiel (transparence, droits, conservation limitée). Aucun changement déployé.
+
 ## Outils MT5 0.1.0 — 16/10/2026 (poste du porteur, hors labo)
 - Contrôle du robot MT5 sans aucun ordre : audit statique, `check` avec ordres bloqués et sortie masquée,
   enchaînement des deux en une commande. Testé sur robots fictifs uniquement (registre, section 27).
