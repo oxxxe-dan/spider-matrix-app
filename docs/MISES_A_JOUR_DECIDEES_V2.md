@@ -548,3 +548,26 @@ Vérifications : 42 tests serveur (loi normale, voisins, PBO sur du bruit, sur u
 | Rentabilité | Aucune stratégie n'est déclarée ni passée en réel sans rentabilité nette mesurée hors échantillon puis sur des barres nouvelles ; le système refuse lui-même ce qui ne l'est pas. Aucun résultat n'est garanti |
 
 **Concept de la toile (précision du porteur) :** chaque petit carré de la toile est un marché ou une paire, avec son centre = le zéro. Chaque araignée est une source de données (prix et force relative, positions des institutions, calendrier, plus hauts et plus bas…) qui se déplace sur la toile ; sa position par rapport au centre dit qui est fort ou faible. Les positions se choisissent en croisant toutes les araignées, avec les données de marché en premier.
+
+---
+
+## 26. Socle risque — profil de risque central et numéros de version (Labo V12, version 12.35.0) — mis en ligne le 16/10/2026
+
+Réponse au point 8 du registre v13 (séparation des rôles : le moteur de risque ne doit pas pouvoir être configuré ou contourné par l'agent qui génère le signal) et au point 11 (versionnage et journal des versions séparé).
+
+| Élément | Comportement |
+|---|---|
+| Constat de départ | Les limites de risque étaient rangées dans les réglages de chaque agent : rien n'empêchait, dans la structure, qu'une évolution de l'agent les desserre |
+| Profil de risque central | Plafonds communs : risque max par trade, perte max par jour, pertes de suite max, trades max par jour, arrêt imposé au drawdown, pause minimale après perte |
+| Où il s'applique | Dans le moteur de backtest lui-même, à chaque calcul : labo, StrategyTune, auto-évolution, Chasse, Arène, Live, multi-marchés, comparaison des sources |
+| Agents | Un agent peut être plus prudent que le profil, jamais moins ; une valeur plus risquée est ramenée au plafond et le résultat l'indique |
+| Réglage | Par le propriétaire seul (onglet Diagnostic, route protégée), avec confirmation ; chaque changement est numéroté et gardé en historique ; valeurs limitées aux listes proposées |
+| Sécurité par défaut | Profil illisible ou invalide : plafonds d'origine, jamais plus larges |
+| Valeurs de départ | 0,5 % par trade, 1 % par jour, 4 pertes de suite, 5 trades par jour, pas d'arrêt imposé au drawdown, pas de pause minimale : les valeurs les plus larges des 8 agents, donc aucun résultat ne change |
+| Versions | Numéro 12.35.0 affiché dans l'en-tête et renvoyé par la santé du système ; journal des versions publiées : [`CHANGELOG.md`](CHANGELOG.md) |
+
+Vérifications : 8 agents × or et EUR/USD, trades identiques à la version précédente avec les plafonds d'origine ; 21 tests (plafonds appliqués : 2 → 1 trade par jour, lots 0,10 → 0,06 avec 0,25 % de risque ; arrêt au drawdown imposé ; agent plus prudent conservé ; réglage d'agent desserré ramené au plafond ; valeurs hors liste refusées ; versions et historique ; routes réservées au propriétaire ; comparaison des sources et auto-évolution appliquant le profil côté serveur) ; 37 tests R9 et 42 tests du chantier 1 inchangés ; parcours de l'interface (réglage du profil, avis « Profil de risque appliqué » sur le résultat) ; typage strict sans erreur. Tests sur données synthétiques.
+
+Mise à jour du point 12 du registre v13 : la limite « 125/125 » n'est plus d'actualité ; les déploiements passent. La limite connue de la plateforme AppDeploy est un plafond de crédits par jour (UTC).
+
+Prochaine étape décidée : « l'Œil », phase 1 (grilles Forex, Symboles, Or et métaux ; fort contre faible ; le contre ; plus hauts et plus bas).
