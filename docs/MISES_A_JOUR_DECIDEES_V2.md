@@ -412,3 +412,11 @@ Réponse à la rubrique 6 du registre d'évolution (intégrer bid / ask et sprea
 Ce qui ne change pas : avec Yahoo, un import CSV ou les données synthétiques (pas de prix d'achat et de vente séparés), le spread modélisé s'applique comme avant et les résultats sont identiques (vérifié sur les 8 agents, or et EUR/USD).
 
 Vérifications : 22 tests dédiés (résultats inchangés sans spread réel ; spread réel constant égal au modélisé = mêmes trades et mêmes coûts ; entrée = milieu ± demi-spread ± glissement ; mode modélisé ; refus des entrées quand le spread réel dépasse le maximum ; alignement des spreads après tri ; agrégation H1 ; séries incomplètes écartées ; onglet Live ; route OANDA en prix d'achat et de vente avec bid et ask reconstitués exactement), parcours de l'interface (chargement OANDA, spread réel affiché puis mode modélisé), tous les tests et parcours précédents réussis. Coût de calcul : environ +10 % en spread modélisé et +29 % en spread réel par backtest, sur des durées de quelques millisecondes.
+
+---
+
+## 20. Lot R5 (caméra / analyse visuelle) — mis de côté le 16/10/2026
+
+Décision du porteur : la caméra (rubrique 5 du registre d'évolution) est reportée à plus tard. Rien n'est développé ni déployé pour ce lot. Rappel du cadrage prévu pour sa reprise : image réduite et compressée dans le navigateur avant envoi, valeurs lues présentées dans un petit tableau corrigeable, analyse lancée seulement sur les valeurs confirmées, nombre de lectures par heure limité (coût en crédits à chaque lecture).
+
+Lots restants : R6 (cellules de la matrice : position de chaque valeur par rapport au zéro central, labo éducatif) ; R5 à reprendre plus tard.
