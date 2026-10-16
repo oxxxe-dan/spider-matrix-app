@@ -420,3 +420,22 @@ Vérifications : 22 tests dédiés (résultats inchangés sans spread réel ; sp
 Décision du porteur : la caméra (rubrique 5 du registre d'évolution) est reportée à plus tard. Rien n'est développé ni déployé pour ce lot. Rappel du cadrage prévu pour sa reprise : image réduite et compressée dans le navigateur avant envoi, valeurs lues présentées dans un petit tableau corrigeable, analyse lancée seulement sur les valeurs confirmées, nombre de lectures par heure limité (coût en crédits à chaque lecture).
 
 Lots restants : R6 (cellules de la matrice : position de chaque valeur par rapport au zéro central, labo éducatif) ; R5 à reprendre plus tard.
+
+---
+
+## 21. Lot R6 — cases de la matrice autour du zéro central (labo éducatif) — mis en ligne le 16/10/2026
+
+Réponse à la rubrique 2 du registre d'évolution (« zéro au centre de chaque carré comme point de référence », valeurs qui se déplacent les unes par rapport aux autres).
+
+| Élément | Comportement |
+|---|---|
+| Jauge dans chaque case | Le zéro au centre ; le point se place de −1 (à gauche : la devise de la ligne faiblit face à celle de la colonne) à +1 (à droite : elle se renforce) ; une barre relie le zéro au point (bleu au-dessus de zéro, rouge en dessous) |
+| Mouvement | À chaque mise à jour de la force des devises (variation réelle sur 24 h), le point glisse vers sa nouvelle position ; un trait violet garde la position précédente et une flèche ▲▼ donne le sens du mouvement |
+| Donnée manquante | Si une des deux devises n'a pas de force mesurée, la case affiche « n.d. » et une jauge hachurée, au lieu d'un faux « NEUTRE » à zéro |
+| Lecture | Infobulle de chaque case (valeur, sens de lecture) et légende sous la matrice ; animation coupée si l'appareil demande moins de mouvements |
+
+Coût : aucun appel serveur supplémentaire ; la jauge réutilise la force des devises déjà chargée.
+
+Vérifications : 6 tests de rendu (zéro au centre et bornes, valeur positive et négative, trace de la position précédente, mouvement négligeable ignoré, donnée indisponible, sens de la flèche), typage strict sans erreur, points d'ancrage vérifiés uniques dans le code en ligne.
+
+État du registre d'évolution : R1, R2, R3, R4 et R6 en ligne ; R5 (caméra) mis de côté.
