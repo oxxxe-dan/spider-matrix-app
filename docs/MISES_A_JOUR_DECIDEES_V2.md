@@ -489,3 +489,47 @@ Nouvelle section « Rapport de la semaine » dans l'onglet Auto-évolution.
 Vérifications : 37 tests serveur (découpage des semaines, collage trié sans doublon, curseur 3 marchés par passage, une seule lecture Yahoo par marché et par semaine, semaine jamais réécrite, marché en panne isolé, taille d'une semaine < 256 Ko, série longue identique à la série d'origine, raccord d'or antérieur aux 59 jours détecté et neutralisé, route réservée au propriétaire, comptes du rapport, photo figée une seule fois par semaine) ; parcours de l'interface (bouton Yahoo long, rapport en cours et figé) ; parcours précédents réussis ; typage strict sans erreur côté écran et côté serveur.
 
 État du registre d'évolution : R1, R2, R3, R4, R6, R9 et R11 en ligne ; R5 (caméra) mis de côté ; R7, R8, R10 et R12 proposés.
+
+---
+
+## 24. Chantier 1 — santé du système, pause générale et contrôle de robustesse (Labo V12) — mis en ligne le 16/10/2026
+
+Décision du porteur : options 1, 2 et 3 du chantier 1, sans notification sur téléphone. Codé et testé avant déploiement, déployé après accord explicite.
+
+### Santé du système (onglet Diagnostic)
+
+| Élément | Comportement |
+|---|---|
+| Suivi des tâches planifiées | Chasse, auto-évolution et archive enregistrent chaque passage : début, durée, succès ou échec, lectures de données réussies ou non |
+| Statut affiché | OK, en retard (pas de passage à l'heure prévue, avec 20 min de marge), échec (erreur ou aucune donnée lue), en pause, en attente (jamais exécutée) |
+| Alerte active | Bandeau en haut de l'écran dès qu'une tâche est en échec ou en retard, ou que la pause générale est active, avec un bouton vers le détail. Lecture toutes les minutes tant que la page est ouverte |
+| Temps de réponse | Temps de réponse du serveur à la dernière lecture, durée de chaque tâche et durée maximale récente |
+
+### Pause générale et coupe-circuit
+
+| Élément | Comportement |
+|---|---|
+| Pause manuelle | Un bouton suspend la Chasse, l'auto-évolution et l'archive ; le lancement manuel d'un cycle ou de la Chasse est refusé pendant la pause. Aucun paramètre n'est modifié |
+| Déclenchement automatique (mode sûr) | 3 échecs d'exécution de suite d'une tâche ; 4 passages de suite sans aucune donnée lue (1 heure pour une tâche de 15 minutes) ; 4 retours arrière de l'auto-évolution en 24 heures |
+| Reprise | Uniquement manuelle ; les compteurs repartent de zéro, et les retours arrière antérieurs à la reprise ne comptent plus |
+| Traçabilité | Historique des 20 dernières pauses et reprises (manuelle ou automatique, raison) |
+| Exécution future | Le labo n'envoie aucun ordre ; un futur pont d'exécution devra lire ce même interrupteur avant tout ordre |
+
+### Contrôle de robustesse (discipline anti-surapprentissage)
+
+Quatre contrôles, mesurés sur recherche + validation (le test final masqué n'est jamais utilisé) :
+
+| Contrôle | Seuil pour passer |
+|---|---|
+| Walk-forward : le choix parmi les configurations, refait sur le passé, tient sur la période suivante | Verdict « stable » (au moins 3 fenêtres sur 4 positives, espérance hors échantillon > 0, au moins 20 trades) |
+| Réglages voisins : un cran de part et d'autre sur les EMA H1 / M15 / M5, le stop ATR et le R:R | Au moins 75 % des voisins gardent une espérance > 0 et au moins la moitié de celle du candidat |
+| Probabilité de sur-ajustement (PBO, méthode CSCV, 8 blocs de temps, 70 découpages) | Au plus 50 % |
+| Sharpe dégonflé du nombre d'essais (asymétrie et queues épaisses comprises) | Au moins 95 % de confiance, avec au moins 20 trades |
+
+- **StrategyTune** : bouton « Robustesse » sur chaque ligne ; une variante n'est « validée (robuste) » que si les quatre contrôles passent. La conclusion apparaît aussi dans la confirmation avant « Appliquer », et chaque contrôle est inscrit au journal.
+- **Auto-évolution** : contrôle du champion une fois par version et par jour (16 backtests de voisins environ) ; le Sharpe dégonflé tient compte de tous les challengers testés depuis le début. « Validé » = confirmé en avant (20 trades) **et** robuste. Étiquette seulement : adoption et retour arrière inchangés. Le rapport de la semaine compte les agents validés.
+- Choix assumé : PBO **et** Sharpe dégonflé sont tous deux exigés (plus strict que « l'un ou l'autre »). Avec 59 jours de données, peu de candidats passeront au début ; l'archive R9 allongera l'historique.
+
+Vérifications : 42 tests serveur (loi normale, voisins, PBO sur du bruit, sur une configuration dominante et sur un choix qui ne tient pas, Sharpe dégonflé selon le nombre d'essais, test final jamais utilisé, statuts des tâches dont les créneaux du samedi, chaque déclenchement du coupe-circuit et la reprise, routes réservées au propriétaire, refus des lancements pendant la pause, robustesse du champion évolué mesurée sans changer ses paramètres) ; 37 tests R9 inchangés ; parcours de l'interface (bandeau, pause, reprise, bouton Robustesse, étiquette « validé », rapport) ; parcours précédents réussis ; typage strict sans erreur. Tests sur données synthétiques : aucun résultat de marché n'est annoncé.
+
+État du chantier 1 : observabilité minimale, coupe-circuit et discipline walk-forward en ligne dans le labo. Reste hors du labo : le coupe-circuit côté MT5 (script Python, à vérifier sur le poste du porteur).
