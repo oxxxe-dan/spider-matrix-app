@@ -586,10 +586,10 @@ Constat : le robot n'est pas accessible depuis la session de travail (conteneur 
 | `check_sans_ordre.py` | Lance `check` avec `order_send`, `Buy`, `Sell` et `Close` neutralisés : chaque tentative est bloquée et comptée. Compte, serveur, titulaire et secrets lus dans l'environnement sont masqués dans la sortie |
 | `controle_complet.py` | Les deux à la suite. `check` n'est **pas lancé** si l'audit trouve un ordre atteignable depuis `check` ou ne trouve pas la commande `check`. Rapport dans `rapport_controle.txt`, prêt à coller |
 
-Limites de référence contrôlées : risque 0,50 % par trade, R:R 1,50, perte journalière max 1 %, 2 trades par jour, 3 pertes consécutives max, lot max 0,10, stop ATR × 1,30, break-even à 1 R + 2 points, spread max 20 points, déviation 10.
+Limites de référence contrôlées : risque 0,25 % par trade (décision C1, confirmée par le porteur le 16/10/2026), R:R 1,50, perte journalière max 1 %, 2 trades par jour, 3 pertes consécutives max, lot max 0,10, stop ATR × 1,30, break-even à 1 R + 2 points, spread max 20 points, déviation 10.
 
 Vérifications : 11 tests sous Linux avec un faux module MetaTrader5 et quatre robots fictifs (conforme, fautif, secret en clair, sans commande `check`) : chemins d'appel trouvés, secrets jamais affichés, toutes les tentatives d'ordre bloquées (un fichier témoin prouve qu'aucune n'a traversé), `check` non lancé quand l'audit l'interdit, compte et mot de passe masqués. **Pas encore testé** sur le vrai robot, ni sous Windows, ni avec Python 3.14, ni avec un terminal MT5.
 
-Point ouvert : le risque par trade demandé pour le robot (0,50 %) diffère de la décision C1 (0,25 % en démo et en réel, 0,50 % plafond absolu). À trancher par le porteur ; aucun paramètre n'est modifié en attendant.
+Décision du porteur (16/10/2026) : le robot MT5 applique **0,25 % de risque par trade**, en démo comme en réel, conformément à C1 (0,50 % reste le plafond absolu et la valeur de la recherche V12). L'audit compare désormais le robot à 0,25 %. Le robot lui-même n'est pas modifié : si sa valeur diffère, la correction sera proposée et soumise à accord.
 
 Prochaine étape : le porteur lance `controle_complet.py` sur son poste et transmet le rapport ; rapport A–F sur le vrai robot, puis propositions de modification soumises à accord.

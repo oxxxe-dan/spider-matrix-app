@@ -7,6 +7,7 @@ La numérotation démarre le 16/10/2026 ; les versions antérieures sont décrit
 ## Outils MT5 0.1.0 — 16/10/2026 (poste du porteur, hors labo)
 - Contrôle du robot MT5 sans aucun ordre : audit statique, `check` avec ordres bloqués et sortie masquée,
   enchaînement des deux en une commande. Testé sur robots fictifs uniquement (registre, section 27).
+- Référence du risque par trade du robot : 0,25 % (décision C1 confirmée).
 
 ## 12.35.0 — 16/10/2026
 - Profil de risque central séparé des agents : plafonds (risque par trade, perte par jour, pertes de suite, trades par

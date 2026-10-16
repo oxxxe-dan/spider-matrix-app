@@ -44,6 +44,7 @@ class AuditStatique(unittest.TestCase):
         self.assertIn("FUITE POSSIBLE", r.stdout)
         self.assertIn("DANS UNE BOUCLE", r.stdout)
         self.assertIn("ÉCART", r.stdout)
+        self.assertIn("| Risque par trade | 0,25 % | ÉCART | RISK=1.0", r.stdout)
         # La valeur du secret ne doit jamais apparaître.
         self.assertNotIn("faux-mot-de-passe-de-test", r.stdout)
         self.assertNotIn("12345678", r.stdout)

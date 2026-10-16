@@ -7,7 +7,7 @@ from pathlib import Path
 import MetaTrader5 as mt5
 
 MODE = "demo"
-RISK_PER_TRADE_PCT = 0.5
+RISK_PER_TRADE_PCT = 0.25
 RR = 1.5
 MAX_DAILY_LOSS_PCT = 1.0
 MAX_TRADES_PER_DAY = 2

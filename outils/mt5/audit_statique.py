@@ -25,10 +25,11 @@ from pathlib import Path
 COMMANDE = "check"
 APPELS_ORDRE = {"order_send", "Buy", "Sell", "Close"}
 
-# Limites du robot de référence (registre des décisions, décision C2 pour le R:R).
+# Limites du robot de référence (registre des décisions : C1 et section 27 pour le risque,
+# 0,25 % en démo et en réel ; C2 pour le R:R).
 # Plusieurs valeurs acceptées quand le code peut exprimer un pourcentage en fraction.
 LIMITES = [
-    ("Risque par trade", "0,50 %", {0.5, 0.005}),
+    ("Risque par trade", "0,25 %", {0.25, 0.0025}),
     ("R:R", "1,50", {1.5}),
     ("Perte journalière max", "1 %", {1.0, 0.01}),
     ("Trades par jour", "2", {2}),
