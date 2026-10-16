@@ -455,3 +455,37 @@ Demande : graphiques moins hauts mais pleine largeur, drawdown réduit, et tous 
 | Mode réglage (C) | — | Bouton « Mode réglage » : écran plein avec indicateurs (net, drawdown, trades, espérance et leur écart), graphiques compacts et courbe « avant le réglage » en pointillé en haut ; réglages pas à pas (− / +) dans un tiroir en bas ; test automatique ; « Garder ce réglage » ou « Annuler les changements » (retour aux réglages d'ouverture) |
 
 Vérifications : 6 tests (libellés sans chevauchement sur la configuration de la capture, bandes larges, bande trop étroite, pas à pas : voisin, bornes, valeur hors liste) ; parcours de l'interface (ordre graphiques puis réglages, hauteurs 150 / 64 px, 6 onglets, point bleu, mode réglage : + sur le stop ATR 1,3 → 1,5, test automatique, écarts affichés, annulation qui remet 1,3, conservation qui garde 1,5) ; tous les parcours précédents réussis, typage strict sans erreur.
+
+---
+
+## 23. Lots R9 et R11 — archive hebdomadaire des barres et rapport de la semaine (Labo V12) — mis en ligne le 16/10/2026
+
+### R9 — historique au-delà des 59 jours de Yahoo
+
+Yahoo ne fournit qu'environ 59 jours de barres M5. Désormais, chaque samedi (marchés fermés), une tâche planifiée copie côté serveur les semaines terminées de chacun des 46 marchés suivis ; elles sont ensuite recollées devant les 59 jours récents.
+
+| Élément | Comportement |
+|---|---|
+| Semaine archivée | Du samedi 00:00 au samedi suivant (heure UTC) : aucune séance n'est coupée en deux. Seules les semaines terminées et complètes sont copiées ; la première semaine de la fenêtre Yahoo (début manquant) est écartée |
+| Prix stockés | Prix bruts de la source, sans raccord de contrat. Pour l'or (GC=F), les raccords d'échéance sont recalculés sur la série longue complète après collage, pour que l'ajustement reste cohérent d'un bout à l'autre |
+| Écriture | Une semaine déjà archivée n'est jamais réécrite. 3 marchés par passage, un passage par heure le samedi de 04:20 à 23:20 (heure de Paris) ; un curseur reprend où le passage précédent s'est arrêté. Un marché en échec est noté et repris la semaine suivante (la fenêtre de 59 jours couvre encore la semaine manquée) |
+| Premier samedi | Environ 8 semaines par marché (tout ce que contient la fenêtre de 59 jours), puis une nouvelle semaine chaque samedi |
+| Nouvelle source « Yahoo long (archive) » | Bouton dans la barre des données : semaines archivées (jusqu'à 26) + 59 jours récents. Le libellé indique « Yahoo Finance + archive » et la note précise le nombre de semaines et la date de départ. Tant que l'archive est vide, la source le dit et ne charge que les 59 jours |
+| Inchangé | La source « Yahoo » classique, la Chasse et l'auto-évolution restent sur 59 jours |
+
+Ordre de grandeur : environ 120 Ko par semaine et par marché ; 26 semaines + 59 jours d'or ≈ 47 000 barres (≈ 2,8 Mo transférés au chargement).
+
+### R11 — rapport hebdomadaire de l'auto-évolution
+
+Nouvelle section « Rapport de la semaine » dans l'onglet Auto-évolution.
+
+| Colonne / élément | Contenu |
+|---|---|
+| Semaine | Semaine en cours (calculée à la lecture) ou une des 12 semaines précédentes (figées chaque samedi matin) |
+| Synthèse | Challengers testés, adoptions, propositions, retours arrière, confirmations ; nombre d'évolués devant ou derrière leur base en avant, et à l'essai |
+| Par agent | Version au début et à la fin de la semaine (ex. « Base → v1 »), challengers testés, événements de la semaine, espérance en avant de l'évolué et de la base, bilan (« Trop tôt pour juger » sous 8 trades en avant, « Identique à la base », meilleur, à égalité, moins bon) |
+| Honnêteté des comptes | Les challengers testés se comptent par différence avec la photo de la semaine précédente : « — » tant qu'aucune photo n'existe (le premier rapport figé, samedi 17/10, n'en aura pas). Si le journal d'un agent (12 derniers événements) est plein, les comptes sont marqués « ≥ » |
+
+Vérifications : 37 tests serveur (découpage des semaines, collage trié sans doublon, curseur 3 marchés par passage, une seule lecture Yahoo par marché et par semaine, semaine jamais réécrite, marché en panne isolé, taille d'une semaine < 256 Ko, série longue identique à la série d'origine, raccord d'or antérieur aux 59 jours détecté et neutralisé, route réservée au propriétaire, comptes du rapport, photo figée une seule fois par semaine) ; parcours de l'interface (bouton Yahoo long, rapport en cours et figé) ; parcours précédents réussis ; typage strict sans erreur côté écran et côté serveur.
+
+État du registre d'évolution : R1, R2, R3, R4, R6, R9 et R11 en ligne ; R5 (caméra) mis de côté ; R7, R8, R10 et R12 proposés.
