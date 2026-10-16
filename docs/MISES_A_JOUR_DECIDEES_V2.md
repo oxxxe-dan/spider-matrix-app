@@ -247,7 +247,7 @@ Vérifications : 13 tests du moteur et 13 tests de l'auto-évolution réussis, t
 
 Vérifications : calcul de force contrôlé à la main sur un jeu de paires (classement attendu retrouvé), séries de paires et quota testés, typage strict sans erreur. Après mise en ligne : aucune erreur interface ni serveur.
 
-Point ouvert : l'application « Bot » n'apparaît plus dans le compte d'hébergement ; le lot 1.5 (retrait du DCA, source des prix) attend une décision.
+Décision du 16/10/2026 : l'application « Bot » est abandonnée (elle n'apparaît plus dans le compte d'hébergement) ; le lot 1.5 est clos sans suite.
 
 
 ---
@@ -260,3 +260,21 @@ Point ouvert : l'application « Bot » n'apparaît plus dans le compte d'héberg
 | 4.4 Budget global de tests | Le seuil de significativité de l'auto-évolution se durcit avec le nombre total de challengers déjà testés pour chaque agent : seuil de la Chasse (p corrigée ≤ 0,1) pour les 100 premiers, puis baisse comme la racine du nombre d'essais (÷ 2 à 400, ÷ 10 à 10 000). Le seuil en vigueur est affiché à côté du nombre de challengers testés. Conséquence attendue : moins d'adoptions, chacune mieux établie. |
 
 Vérifications : 8 tests dédiés (pagination complète sans doublon, refus d'un export incomplet, panne partielle notée, seuil décroissant), 13 tests du moteur et 13 tests de l'auto-évolution réussis, typage strict sans nouvelle erreur, export vérifié dans l'interface simulée. Après mise en ligne : aucune erreur interface ni serveur.
+
+---
+
+## 13. Consommation de crédits d'hébergement réduite — mis en ligne le 16/10/2026
+
+Constat : le plafond de 1 000 crédits par jour du forfait d'hébergement avait été atteint le 15/10, ce qui suspend les déploiements **et** l'usage des apps jusqu'au lendemain. Seules les deux apps Spider ont des tâches automatiques ; la revue Sentinel par IA était déjà désactivée et ne consommait rien.
+
+| Source de consommation | Avant | Après |
+|---|---|---|
+| Labo éducatif : pages cachées | Toutes les pages restent chargées ; tant que l'app est ouverte, même sur une autre page ou en arrière-plan, la Battle recalculait les agents côté serveur toutes les 10 s et le centre de décision interrogeait le serveur toutes les 30 s (environ 480 appels par heure) | Rafraîchissement seulement quand la page concernée est affichée et l'onglet du navigateur visible, au plus une fois par minute ; calendrier et force des devises également suspendus en arrière-plan |
+| Labo V12 : auto-évolution | Tâche toutes les 5 min, un cycle par agent toutes les 20 min (backtests relancés sur des données quasi identiques) | Tâche toutes les 15 min, un cycle par agent toutes les 2 h |
+| Labo V12 : Chasse | Tâche toutes les 5 min | Toutes les 15 min (une chasse complète par semaine, inchangé) |
+| Labo éducatif : cycle Sentinel | Toutes les 15 min (13 marchés analysés) | Toutes les heures |
+| Labo éducatif : optimisation Jarvis native | Toutes les 30 min | Toutes les 6 h |
+| Labo éducatif : archive du calendrier | Toutes les heures | Toutes les 6 h |
+
+Effet attendu : les exécutions automatiques passent d'environ 744 à environ 224 par jour (−70 %), et le calcul de l'auto-évolution est divisé par environ 5. Les fonctions restent les mêmes : seuls les rythmes changent. Après mise en ligne : aucune erreur interface ni serveur, nouvelles planifications actives.
+
