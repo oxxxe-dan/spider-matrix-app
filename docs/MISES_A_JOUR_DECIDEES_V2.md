@@ -617,3 +617,23 @@ Propositions soumises au porteur (rien n'est codé ni déployé sans accord) :
 | P3 | « Mes données » : consulter, exporter (JSON) et effacer ses données (liste d'attente, essais, jeux de réglages) | Droits d'accès, de portabilité et d'effacement | Effacement irréversible : confirmation demandée |
 | P4 | Durées de conservation : liste d'attente purgée 12 mois après l'inscription par la tâche planifiée ; journal d'audit conservé 5 ans puis purgé (durée à choisir par le porteur) | Conservation limitée | Une purge mal réglée efface trop : tests sur données fictives |
 | P5 | Ajouter au Hub une ligne « Robot MT5 (poste du porteur) : CONDITIONNEL — démo uniquement, contrôles du chantier 2 » | Le robot, hors labo, apparaît dans la conformité | Aucun |
+
+---
+
+## 29. RGPD et conformité — P1 à P5 (Labo V12, version 12.36.0) — mis en ligne le 16/10/2026
+
+Décision du porteur : P1, P2, P3, P4 et P5 de la section 28, avec les durées proposées. Codé, testé, puis déployé sur son accord explicite.
+
+| # | Réalisé |
+|---|---|
+| P1 | Statut **PARTIEL** (nouveau) pour « RGPD / CNIL » dans le tableau de conformité, avec ce qui est fait et ce qui reste : relecture juridique de la notice, adresse de contact du responsable, registre des traitements |
+| P2 | Notice de confidentialité (version 1) dans l'onglet Spider Agent, section « Vos données (RGPD) » : responsable, finalités, données, bases légales, durées, sous-traitants (hébergeur, Stripe au paiement), droits, réclamation CNIL |
+| P3 | « Mes données », pour tout compte connecté : voir, exporter en JSON, effacer (saisie EFFACER obligatoire). L'effacement vise l'inscription sur la liste d'attente, le plan (retour à Gratuit) et le lien avec un client de paiement. Les données de recherche du propriétaire sont signalées, exportables par la Sauvegarde du Journal, et gardées selon leur durée. Lien depuis l'onglet Offres |
+| P4 | Tâche planifiée quotidienne « conservation » (03:40, heure de Paris), sautée pendant la pause générale : liste d'attente supprimée 12 mois après l'inscription (avec le repère « déjà inscrit »), journal d'audit supprimé après 5 ans. Lecture bornée (5 pages de 100 par table et par passage), reprise au point d'arrêt. Date du dernier passage et nombre de fiches supprimées visibles dans « Mes données » |
+| P5 | Ligne « Robot MT5 (poste du porteur) : CONDITIONNEL » : démo uniquement, contrôle sans ordre avant toute session, risque 0,25 % par trade, réel seulement après accord explicite, contrôle pas encore passé sur le vrai robot |
+
+Routes ajoutées : `GET /api/me/data` et `POST /api/me/erase`, réservées aux comptes connectés, chacun ne voyant que ses propres données.
+
+Vérifications avant déploiement : typage strict sans erreur ; tests sur une base fictive en mémoire (250 inscrits dont 130 de plus de 12 mois → 130 supprimés avec leurs repères, 120 gardés ; journal d'audit de 5 fiches dont 3 de plus de 5 ans → 3 supprimées ; second passage sans effet ; export puis effacement d'un compte Pro avec lien de paiement → 1 inscription, 1 repère, 1 plan, 1 lien effacés, les autres inscrits intacts ; données de recherche du propriétaire jamais effacées). Après déploiement : statut « prêt », aucune erreur côté navigateur ni serveur, tâche « conservation » enregistrée. Non vérifié : parcours connecté de « Mes données » en ligne (à faire par le porteur), premier passage réel de la tâche (prochaine nuit).
+
+Reste à fournir par le porteur : l'adresse de contact à afficher dans la notice. Restent à faire : relecture juridique de la notice et registre des traitements (article 30).

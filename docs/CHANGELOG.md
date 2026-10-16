@@ -4,6 +4,12 @@ Versions réellement publiées et testées (MAJEUR.MINEUR.CORRECTIF). Les décis
 [`MISES_A_JOUR_DECIDEES_V2.md`](MISES_A_JOUR_DECIDEES_V2.md) ; ce journal ne trace que ce qui est sorti.
 La numérotation démarre le 16/10/2026 ; les versions antérieures sont décrites dans le registre (sections 1 à 15).
 
+## 12.36.0 — 16/10/2026
+- RGPD : notice de confidentialité, « Mes données » (voir, exporter en JSON, effacer), suppression automatique
+  quotidienne (liste d'attente 12 mois, journal d'audit 5 ans). Statut RGPD affiché « PARTIEL » tant que la relecture
+  juridique, le contact et le registre des traitements manquent.
+- Conformité : ligne « Robot MT5 (poste du porteur) : CONDITIONNEL ».
+
 ## Registre — 16/10/2026
 - Conformité : tableau du Hub confronté au code du Labo V12 (registre, section 28). Sécurité opérationnelle et MAR
   confirmées ; RGPD partiel (transparence, droits, conservation limitée). Aucun changement déployé.
