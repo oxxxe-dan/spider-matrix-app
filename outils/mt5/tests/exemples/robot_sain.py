@@ -33,6 +33,9 @@ def connecter():
 
 def check():
     connecter()
+    info = mt5.account_info()
+    print("compte", info.login, "serveur", info.server, "titulaire", info.name)
+    print("mot de passe lu :", os.environ["MT5_PASSWORD"])
     print("spread", mt5.symbol_info("XAUUSD").spread, "max", MAX_SPREAD_POINTS)
     if STOP_FILE.exists():
         print("arrêt d'urgence présent")

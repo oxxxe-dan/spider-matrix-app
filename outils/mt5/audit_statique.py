@@ -9,8 +9,12 @@ Usage (sur le PC, dans le dossier du robot) :
 Les secrets éventuellement trouvés dans le code ne sont jamais affichés :
 seuls le nom de la variable et la ligne sont indiqués.
 
-Code de sortie : 0 rien de bloquant, 1 point bloquant (ordre atteignable
-depuis `check` ou secret en clair), 2 fichier illisible.
+Code de sortie (le plus grave l'emporte) :
+    3  `check` peut atteindre un envoi d'ordre : ne pas lancer `check`
+    4  aiguillage de `check` introuvable : ne pas lancer `check` avant lecture
+    1  secret écrit en clair dans le code (`check` peut tourner)
+    0  rien de bloquant détecté
+    2  fichier illisible
 """
 
 import ast
@@ -116,7 +120,9 @@ class Audit:
         for n in ast.walk(self.arbre):
             if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 self.fonctions.setdefault(n.name, n)
-        self.bloquant = False
+        self.secret_en_clair = False
+        self.ordre_dans_check = False
+        self.check_introuvable = False
 
     # -- utilitaires -------------------------------------------------------
     def dans_boucle(self, n):
@@ -289,8 +295,7 @@ class Audit:
                                 and not isinstance(self.parents.get(m), ast.Attribute):
                             fuites.append((n.lineno, "affiche account_info() entier "
                                                      "(login, nom, serveur)"))
-        if en_clair:
-            self.bloquant = True
+        self.secret_en_clair = bool(en_clair)
         return sorted(set(en_clair)), sorted(sources), sorted(set(fuites))
 
     # -- 6. ordre atteignable depuis `check` ? ------------------------------
@@ -405,8 +410,8 @@ class Audit:
         bloc(self.arbre.body, ["démarrage"])
         dynamiques = sorted({n.lineno for n in ast.walk(self.arbre)
                              if nom_appel(n) in ("getattr", "eval", "exec", "__import__")})
-        if dangers:
-            self.bloquant = True
+        self.ordre_dans_check = bool(dangers)
+        self.check_introuvable = not trouve_entree
         return trouve_entree, sorted(set(dangers)), dynamiques
 
 
@@ -476,9 +481,18 @@ def rapport(chemin):
         out(f"- FUITE POSSIBLE DANS LES JOURNAUX l.{l} : {t}")
 
     out("\n## Verdict")
-    out("- Point bloquant trouvé." if audit.bloquant else "- Aucun point bloquant détecté "
-        "automatiquement (ne remplace pas la lecture du code).")
-    return 1 if audit.bloquant else 0
+    if audit.ordre_dans_check:
+        out("- BLOQUANT : `check` peut envoyer un ordre. Ne pas lancer `check`. (code 3)")
+        return 3
+    if audit.check_introuvable:
+        out("- BLOQUANT : commande `check` introuvable. Ne pas la lancer avant lecture. (code 4)")
+        return 4
+    if audit.secret_en_clair:
+        out("- À CORRIGER : secret écrit en clair. `check` peut tourner. (code 1)")
+        return 1
+    out("- Aucun point bloquant détecté automatiquement (ne remplace pas la lecture du code). "
+        "(code 0)")
+    return 0
 
 
 if __name__ == "__main__":

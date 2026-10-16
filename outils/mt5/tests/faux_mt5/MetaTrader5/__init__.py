@@ -19,7 +19,8 @@ def shutdown():
 
 
 def account_info():
-    return SimpleNamespace(login=1, trade_mode=ACCOUNT_TRADE_MODE_DEMO, balance=10000.0)
+    return SimpleNamespace(login=55550001, server="Faux-Demo-Serveur", name="Titulaire Fictif",
+                           trade_mode=ACCOUNT_TRADE_MODE_DEMO, balance=10000.0)
 
 
 def symbol_info(symbol):
