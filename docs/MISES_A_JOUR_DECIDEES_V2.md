@@ -249,3 +249,14 @@ Vérifications : calcul de force contrôlé à la main sur un jeu de paires (cla
 
 Point ouvert : l'application « Bot » n'apparaît plus dans le compte d'hébergement ; le lot 1.5 (retrait du DCA, source des prix) attend une décision.
 
+
+---
+
+## 12. Sauvegarde et budget de tests du Labo V12 — mis en ligne le 16/10/2026
+
+| Lot | Ce qui a été fait |
+|---|---|
+| 0.6 Sauvegarde | Onglet Journal → « Exporter une sauvegarde (JSON) » : un fichier daté réunit tout le journal des expériences, les versions sauvegardées, les jeux de réglages, ainsi que l'état de l'auto-évolution et de la Chasse. Toutes les pages sont parcourues ; si le journal, les versions ou les jeux ne peuvent pas être lus en entier, l'export est refusé plutôt que tronqué. Une panne de l'auto-évolution ou de la Chasse est notée dans le fichier. Lecture seule : rien n'est modifié. |
+| 4.4 Budget global de tests | Le seuil de significativité de l'auto-évolution se durcit avec le nombre total de challengers déjà testés pour chaque agent : seuil de la Chasse (p corrigée ≤ 0,1) pour les 100 premiers, puis baisse comme la racine du nombre d'essais (÷ 2 à 400, ÷ 10 à 10 000). Le seuil en vigueur est affiché à côté du nombre de challengers testés. Conséquence attendue : moins d'adoptions, chacune mieux établie. |
+
+Vérifications : 8 tests dédiés (pagination complète sans doublon, refus d'un export incomplet, panne partielle notée, seuil décroissant), 13 tests du moteur et 13 tests de l'auto-évolution réussis, typage strict sans nouvelle erreur, export vérifié dans l'interface simulée. Après mise en ligne : aucune erreur interface ni serveur.
