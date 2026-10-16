@@ -280,3 +280,21 @@ Constat : le plafond de 1 000 crédits par jour du forfait d'hébergement avait 
 
 Effet attendu : les exécutions automatiques passent d'environ 744 à environ 200 par jour (−73 %), et le calcul de l'auto-évolution est divisé par environ 5. Les fonctions restent les mêmes : seuls les rythmes changent. Après mise en ligne : aucune erreur interface ni serveur, nouvelles planifications actives.
 
+
+---
+
+## 14. Graphiques « comment il joue » sur chaque agent — mis en ligne le 16/10/2026
+
+Demande : voir chaque agent, dans chacun des deux labos, jouer en temps réel sur un graphique.
+
+| Labo | Ce qui est affiché |
+|---|---|
+| Labo V12, onglet Live (8 agents) | Chaque carte : prix, entrées ▲▼ et sorties ● des derniers trades (vert gagnant, rouge perdant), et quand l'agent est en position ou en signal, les lignes Entrée / Stop / Objectif. Sous le graphique, un bandeau « Comment il joue » : courbe de résultat cumulé en R, résultat latent de la position ouverte et les 3 derniers trades datés. |
+| Labo V12, onglet Live (Jarvis) | Nouvelle carte Jarvis : même graphique pour le chef d'orchestre, construit à partir des signaux des 8 agents, avec sa position ouverte. |
+| Labo éducatif, Battle | Chaque carte d'agent : rejeu des 60 dernières bougies (prix, EMA rapide / lente de l'agent, entrées ▲▼, sorties ●, stop et objectif de la position ouverte), bande ACHAT / VENTE / ATTENTE bougie par bougie, nombre de trades, gagnants et total en R. |
+
+Règles : aucune anticipation (à chaque bougie, l'agent ne voit que les bougies déjà closes), stop compté en premier si stop et objectif sont touchés dans la même bougie, résultats en R et sans frais (démonstration), aucun ordre envoyé. Si le fournisseur de données est indisponible, la carte l'indique : le rejeu n'est alors pas représentatif.
+
+Coût : aucun appel serveur supplémentaire. Dans le Labo V12, les graphiques réutilisent les calculs déjà faits par l'onglet Live dans le navigateur. Dans le labo éducatif, le rejeu est calculé dans la même requête que la Battle, qui reste limitée à une fois par minute, page affichée seulement.
+
+Vérifications : score du rejeu identique au calcul live sur 78 points sur 78, absence d'anticipation, au plus une position ouverte, agent neutre sans trade (8 tests) ; marqueurs et lignes vérifiés dans l'interface simulée ; 13 tests du moteur réussis ; typage strict sans nouvelle erreur.
