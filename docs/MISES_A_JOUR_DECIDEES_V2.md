@@ -533,3 +533,18 @@ Quatre contrôles, mesurés sur recherche + validation (le test final masqué n'
 Vérifications : 42 tests serveur (loi normale, voisins, PBO sur du bruit, sur une configuration dominante et sur un choix qui ne tient pas, Sharpe dégonflé selon le nombre d'essais, test final jamais utilisé, statuts des tâches dont les créneaux du samedi, chaque déclenchement du coupe-circuit et la reprise, routes réservées au propriétaire, refus des lancements pendant la pause, robustesse du champion évolué mesurée sans changer ses paramètres) ; 37 tests R9 inchangés ; parcours de l'interface (bandeau, pause, reprise, bouton Robustesse, étiquette « validé », rapport) ; parcours précédents réussis ; typage strict sans erreur. Tests sur données synthétiques : aucun résultat de marché n'est annoncé.
 
 État du chantier 1 : observabilité minimale, coupe-circuit et discipline walk-forward en ligne dans le labo. Reste hors du labo : le coupe-circuit côté MT5 (script Python, à vérifier sur le poste du porteur).
+
+---
+
+## 25. Décisions du porteur — socle d'entreprise et « l'Œil » — 16/10/2026
+
+| Sujet | Décision |
+|---|---|
+| Ordre des travaux | D'abord le socle risque (profil de risque central séparé des agents, numéros de version), puis « l'Œil » |
+| L'Œil | Premier agent de la chaîne : il voit tout le marché, croise toutes les données et propose toujours « le contre » (qui est fort contre qui est faible : position d'achat, position de vente, position croisée), ainsi que les plus hauts et plus bas, les informations et les positions des grands portefeuilles (rapport COT) |
+| Grilles de l'Œil | Forex (8 devises, 28 paires) · Symboles (pétrole, indices, agricoles) · Or et métaux, à part car l'or est le marché prioritaire. Grille crypto prévue mais reportée |
+| Crypto | Reportée : reste exclue de la version actuelle, conformément au prompt maître |
+| Investisseurs tiers | Pas maintenant. La structure nécessaire est préparée dès la conception (séparation des comptes, rapports, traçabilité), mais rien n'est ouvert sans agrément réglementaire (gestion pour compte de tiers) ni sans avis juridique. Aucune promesse de gain |
+| Rentabilité | Aucune stratégie n'est déclarée ni passée en réel sans rentabilité nette mesurée hors échantillon puis sur des barres nouvelles ; le système refuse lui-même ce qui ne l'est pas. Aucun résultat n'est garanti |
+
+**Concept de la toile (précision du porteur) :** chaque petit carré de la toile est un marché ou une paire, avec son centre = le zéro. Chaque araignée est une source de données (prix et force relative, positions des institutions, calendrier, plus hauts et plus bas…) qui se déplace sur la toile ; sa position par rapport au centre dit qui est fort ou faible. Les positions se choisissent en croisant toutes les araignées, avec les données de marché en premier.
