@@ -374,3 +374,21 @@ Réponse à la rubrique 10 du registre d'évolution. Une « analyse importante �
 Consultation dans l'onglet Journal (liste, détail, export JSON complet) ; le journal d'audit est aussi inclus dans la sauvegarde. Les fiches sont enregistrées tant que l'onglet Live est ouvert ; aucune tâche serveur n'est ajoutée (une écriture par signal, quelques-unes par jour).
 
 Vérifications : 23 tests dédiés (une fiche par signal ou blocage et aucune pour les autres états, plan identique à l'affichage, risque ≤ % autorisé, marge ≤ fonds propres, identifiant stable, anomalies, refus motivé, enregistrement sans doublon, refus des fiches invalides ou trop grosses, accès réservé au propriétaire, sauvegarde complète), parcours de l'interface (3 signaux enregistrés, aucun renvoi à la réouverture, liste, détail et export), tests du moteur, de la marge, de la sauvegarde et de l'auto-évolution réussis.
+
+---
+
+## 18. Lot R3 — diagnostic des sources dans le Labo V12 — mis en ligne le 16/10/2026
+
+Réponse à la rubrique 6 du registre d'évolution (tableau de diagnostic : connexion, données, flux, erreurs, latence). Nouvel onglet « Diagnostic », lancé à la demande seulement : aucune interrogation en arrière-plan, donc aucun crédit consommé tant qu'on ne clique pas.
+
+| Source contrôlée | Ce qui est mesuré |
+|---|---|
+| Yahoo Finance (récent, différé) | Connexion, latence aller-retour, nombre de bougies, âge de la dernière bougie, bougies manquantes, bougies incohérentes ou en double, retours en arrière dans le temps, bougies sans mouvement, présence du volume |
+| OANDA Practice, prix récents (or, EUR/USD) | Mêmes mesures |
+| OANDA Practice, compte en lecture seule | Jeton configuré ou non, connexion acceptée ou refusée, latence serveur → OANDA, nombre de comptes |
+| Données chargées dans le labo | Mêmes mesures de qualité sur l'historique de 59 jours ; fraîcheur mesurée au moment du chargement |
+| Concordance Yahoo / OANDA | Bougies communes, écart médian et dispersion de l'écart en points ; pour l'or, l'écart constant entre contrat à terme et prix spot (la base) est signalé comme normal |
+
+Règles : le week-end et la pause quotidienne ne comptent pas comme des trous. Un flux ancien est normal le week-end et signalé en semaine (retard, panne ou jour férié). Verdict par source : Bon, À surveiller (trous > 0,5 %, flux en retard, bougies figées), Inutilisable (aucune bougie, bougies incohérentes, doublons, série non triée, échec de connexion). Les 20 derniers diagnostics restent visibles sur l'appareil.
+
+Vérifications : 19 tests dédiés (série propre, 25 fermetures normales reconnues, trous de 30 min et de 5 h, doublon, bougie incohérente, série non triée, calendrier du week-end, flux en retard en semaine et normal le samedi, pause quotidienne, bougies figées, série vide, base contrat à terme / spot, écart systématique, bougies présentes dans une seule source, horaires décalés), parcours de l'interface (aucun appel sans clic, 4 lignes, concordance, panne OANDA signalée, historique), parcours des lots R1 et R2 et anciens parcours réussis, typage strict sans erreur.
